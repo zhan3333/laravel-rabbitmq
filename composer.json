@@ -1,0 +1,33 @@
+{
+  "name": "zhan/laravel-rabbitmq",
+  "description": "Laravel RabbitMQ",
+  "authors": [
+    {
+      "name": "zhan",
+      "email": "grianchan@gmail.com"
+    }
+  ],
+  "require": {
+    "ramsey/uuid": "^3.8",
+    "laravel/framework": "^5.5",
+    "php-amqplib/php-amqplib": "^2.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Zhan3333\\RabbitMQ\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Zhan3333\\RabbitMQ\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Zhan3333\\RabbitMQ\\Providers\\RabbitMQProvider"
+      ],
+      "aliases": {}
+    }
+  }
+}
