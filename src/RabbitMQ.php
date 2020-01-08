@@ -9,6 +9,7 @@ namespace Zhan3333\RabbitMQ;
 
 
 use Illuminate\Log\LogManager;
+use Illuminate\Support\Arr;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 
@@ -38,11 +39,23 @@ class RabbitMQ
     public function createConnection()
     {
         $this->connection = new AMQPStreamConnection(
-            $this->config['host'],
-            $this->config['port'],
-            $this->config['user'],
-            $this->config['pwd'],
-            $this->config['vhost']);
+            Arr::get($this->config, 'host'),
+            Arr::get($this->config, 'port'),
+            Arr::get($this->config, 'user'),
+            Arr::get($this->config, 'pwd'),
+            Arr::get($this->config, 'vhost'),
+            Arr::get($this->config, 'insist'),
+            Arr::get($this->config, 'login_method'),
+            Arr::get($this->config, 'login_response'),
+            Arr::get($this->config, 'locale'),
+            Arr::get($this->config, 'connection_timeout'),
+            Arr::get($this->config, 'read_write_timeout'),
+            Arr::get($this->config, 'context'),
+            Arr::get($this->config, 'keepalive'),
+            Arr::get($this->config, 'heartbeat'),
+            Arr::get($this->config, 'channel_rpc_timeout'),
+            Arr::get($this->config, 'ssl_protocol')
+        );
     }
 
     public function createChannle()

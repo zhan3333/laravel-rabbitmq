@@ -12,28 +12,65 @@
 
 - 配置 config/rebbitmq.php
 
-```
-'active' => env('RABBITMQ_ACTIVE', true),
-'task' => [
+```php
+<?php
+
+return [
+    'active' => env('RABBITMQ_ACTIVE', true),
+    // 任务队列配置
+    'task' => [
+        // 是否开启日志 true/false
         'log_enable' => env('TASK_RABBITMQ_LOG_ENABLE', false),
+        // 日志使用通道
         'log_channel' => env('TASK_RABBITMQ_LOG_CHANNEL', 'daily'),
+        // 队列配置
         'host' => env('TASK_RABBITMQ_HOST', '127.0.0.1'),
         'port' => env('TASK_RABBITMQ_PORT', 5672),
-        'user' => env('TASK_RABBITMQ_USER', 'sync'),
-        'pwd' => env('TASK_RABBITMQ_PWD', 'offlineDataSync'),
-        'vhost' => env('TASK_RABBITMQ_VHOST', 'sync'),
-        'exchange_name' => env('TASK_RABBITMQ_EXCHANGE_NAME', 'cass'),
+        'user' => env('TASK_RABBITMQ_USER', 'user'),
+        'pwd' => env('TASK_RABBITMQ_PWD', 'pwd'),
+        'vhost' => env('TASK_RABBITMQ_VHOST', 'vhost'),
+        'exchange_name' => env('TASK_RABBITMQ_EXCHANGE_NAME', 'exchange'),
         'queue_name' => env('TASK_RABBITMQ_QUEUE_NAME', 'task'),
-        'routing_key' => env('TASK_RABBITMQ_ROUTING_KEY', 'cass_task'),
+        'routing_key' => env('TASK_RABBITMQ_ROUTING_KEY', 'task'),
         // consumer only
         'consumer_tag' => env('TASK_RABBITMQ_CONSUMER_TAG', 'consumer_tag'),
+
+        'keepalive' => env('TASK_RABBITMQ_KEEPALIVE', false),
+        'heartbeat' => env('TASK_RABBITMQ_HEARTBEAT', 0),
+        'connection_timeout' => env('TASK_RABBITMQ_CONNECTION_TIMEOUT', 0),
+        'read_write_timeout' => env('TASK_RABBITMQ_READ_WRITE_TIMEOUT', 0),
+        'channel_rpc_timeout' => 0.0,
+        'ssl_protocol' => null,
+        'insist' => false,
+        'login_method' => 'AMQPLAIN',
+        'login_response' => null,
+        'locale' => 'en_US',
+        'context' => null,
     ],
+];
+
 ```
 
 - 启动队列消费者
 
 ```
 php artisan rabbitmq:task-consumer
+```
+
+- 自定义启动消费者
+```php
+use Zhan3333\RabbitMQ\Consumers\TaskConsumer;
+
+function () {
+    app(TaskConsumer::class)
+        ->after(function ($id, $task, $data) {
+            Log::debug('after', [$id, $task, $data]);
+        })
+        ->before(function ($id, $task, $data) {
+            Log::debug('befor', [$id, $task, $data]);
+        })
+        ->start();
+}
 ```
 
 - 命令行推送消息到队列(可选调试用)
