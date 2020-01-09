@@ -26,8 +26,8 @@ return [
 
         'keepalive' => env('TASK_RABBITMQ_KEEPALIVE', false),
         'heartbeat' => env('TASK_RABBITMQ_HEARTBEAT', 0),
-        'connection_timeout' => env('TASK_RABBITMQ_CONNECTION_TIMEOUT', 0),
-        'read_write_timeout' => env('TASK_RABBITMQ_READ_WRITE_TIMEOUT', 0),
+        'connection_timeout' => env('TASK_RABBITMQ_CONNECTION_TIMEOUT', 3),
+        'read_write_timeout' => env('TASK_RABBITMQ_READ_WRITE_TIMEOUT', 3),
         'channel_rpc_timeout' => 0.0,
         'ssl_protocol' => null,
         'insist' => false,
