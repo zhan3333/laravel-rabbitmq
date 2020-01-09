@@ -50,13 +50,13 @@ class RabbitMQProvider extends ServiceProvider
         $this->app->singleton(TaskConsumer::class, function () {
             return new TaskConsumer('task', config('rabbitmq.task'));
         });
-        $this->app->singleton(Publisher::class, function ($app, $options) {
+        $this->app->bind(Publisher::class, function ($app, $options) {
             if (empty($options['name'])) {
                 throw new RabbitMQConfigException('Rabbit use publisher must require name');
             }
             return new Publisher($options['name'], config("rabbitmq.{$options['name']}"));
         });
-        $this->app->singleton(TaskPublisher::class, function () {
+        $this->app->bind(TaskPublisher::class, function () {
             return new TaskPublisher('task', config('rabbitmq.task'));
         });
         $this->app->singleton(RabbitMQLogger::class, function ($app, $options) {

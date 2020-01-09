@@ -60,9 +60,9 @@ class RabbitMQ
 
     public function createChannle()
     {
-        $queue = $this->config['queue_name'];
-        $exchange = $this->config['exchange_name'];
-        $routerKey = $this->config['routing_key'];
+        $queue = Arr::get($this->config, 'queue_name');
+        $exchange = Arr::get($this->config, 'exchange_name');
+        $routerKey = Arr::get($this->config, 'routing_key');
         $this->channel = $this->connection->channel();
         $this->channel->queue_declare($queue, false, true, false, false);
         $this->channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
